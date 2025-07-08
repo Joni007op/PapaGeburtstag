@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alles Gute zum Geburtstag, Papa!</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 100px 20px 40px;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    h1 {
+      font-size: 4em;
+      color: #fff;
+      text-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #0ff; }
+      to { text-shadow: 0 0 30px #0ff; }
+    }
+
+    p.subtitle {
+      font-size: 1.5em;
+      color: #ccc;
+      margin-top: 10px;
+    }
+
+    .button-container {
+      margin-top: 40px;
+    }
+
+    .btn {
+      padding: 20px 40px;
+      font-size: 1.5em;
+      margin: 20px;
+      background-color: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      box-shadow: 0 0 10px #ff4081;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+    }
+
+    .spacer {
+      height: 50000px;
+      background: url('https://cdn.pixabay.com/photo/2017/01/06/19/15/mercedes-benz-1954388_1280.jpg') repeat-y center top;
+      background-size: cover;
+      opacity: 0.07;
+    }
+
+    .footer {
+      padding: 100px 20px;
+      background: #111;
+      font-size: 1.2em;
+      text-align: center;
+      z-index: 2;
+      position: relative;
+    }
+
+    .footer h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    .footer p {
+      max-width: 800px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    iframe {
+      width: 90%;
+      max-width: 800px;
+      height: 450px;
+      border: none;
+      margin: 30px 0;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #0ff;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Feuerwerk -->
+  <canvas id="fireworks"></canvas>
+
+  <!-- Überschrift -->
+  <header>
+    <h1>Alles Gute zum Geburtstag, Papa! 🎉</h1>
+    <p class="subtitle">Ich wünsche dir einen Tag voller Freude, Überraschungen und Liebe.</p>
+
+    <div class="button-container">
+      <button class="btn" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')">
+        😂 Überraschungsvideo ansehen
+      </button>
+    </div>
+  </header>
+
+  <!-- Scrollbereich mit Auto-Hintergrund -->
+  <div class="spacer"></div>
+
+  <!-- Footer mit echtem Video -->
+  <div class="footer">
+    <h2>📜 Deine echte Nachricht & Geschenk</h2>
+    <p>
+      Lieber Papa,<br>
+      du bist der beste Vater der Welt. Danke für alles, was du für mich getan hast.<br>
+      Ich liebe dich von ganzem Herzen. ❤️<br><br>
+      Dein Sohn,<br>
+      Jonathan
+    </p>
+
+    <button class="btn" onclick="window.open('https://www.youtube.com/watch?v=DEIN_ECHTES_VIDEO_ID', '_blank')">
+      🎥 Dein echtes Geburtstagsvideo
+    </button>
+  </div>
+
+  <!-- Feuerwerk-Animation -->
+  <script>
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let fireworks = [];
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.radius = 2;
+        this.color = color;
+        this.speed = random(2, 10);
+        this.angle = random(0, Math.PI * 2);
+        this.alpha = 1;
+        this.decay = random(0.01, 0.02);
+      }
+
+      update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        this.alpha -= this.decay;
+      }
+
+      draw() {
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function createFirework() {
+      const x = random(100, canvas.width - 100);
+      const y = random(100, canvas.height / 2);
+      const color = `hsl(${Math.floor(random(0, 360))}, 100%, 60%)`;
+      for (let i = 0; i < 50; i++) {
+        fireworks.push(new Particle(x, y, color));
+      }
+    }
+
+    function animate() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      fireworks.forEach((p, i) => {
+        p.update();
+        p.draw();
+        if (p.alpha <= 0) fireworks.splice(i, 1);
+      });
+      requestAnimationFrame(animate);
+    }
+
+    setInterval(createFirework, 800);
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
